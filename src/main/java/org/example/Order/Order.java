@@ -1,11 +1,8 @@
 package org.example.Order;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-import static io.restassured.RestAssured.given;
-@Getter
-@Setter
+@Data
 public class Order {
 
     private String[] ingredients;

@@ -8,6 +8,7 @@ import org.example.Order.OrderMethods;
 import org.example.User.UserMethods;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.apache.http.HttpStatus.*;
@@ -67,37 +68,27 @@ public class CreateOrderTests {
                 .statusCode(SC_INTERNAL_SERVER_ERROR);
 
     }
-
-    //Данный метод проверят ожидаемый результат не тот, который должен быть,
-    //для того чтобы тест не ложился, в Description описана причина. После фикса бага, нужно менять код метода
+    @Ignore("Тест выключен, так как тут баг")
     @Test
     @DisplayName("Создание заказа без авторизации с ингредиентами")
-    @Description("Создание заказа без авторизацией с ингредиентами, ожидается код 401 Unauthorized," +
-            "но на самом деле получается код 200 и success: true - это Баг, так как в web версии нельзя сделать бургер будучи неавторизованным ")
+    @Description("Создание заказа без авторизацией с ингредиентами, ожидается код 401 Unauthorized")
     public void createOrderWithoutAuthorizationTest() {
         isDeleteUser = false;
         Order order = new Order(new String[]{foodData.getAllIngredientsId().get(0), foodData.getAllIngredientsId().get(1)});
         orderMethods.createOrderWithoutAuthorization(order).then()
-                .statusCode(SC_OK)
-                .and()
-                .assertThat()
-                .body("success", equalTo(true));
-    }
+                .statusCode(SC_UNAUTHORIZED);
 
-    //Данный метод проверят ожидаемый результат не тот, который должен быть,
-    // для того чтобы тест не ложился, в Description описана причина. После фикса бага, нужно менять код метода
+    }
+    @Ignore("Тест выключен, так как тут баг")
     @Test
     @DisplayName("Создание заказа без авторизации и без  ингредиентов")
-    @Description("Создание заказа без авторизации и без  ингредиентов, ожидается код 401 Unauthorized," +
-            "но на самом деле получается код 400 и success: false, message:Ingredient ids must be provided - это Баг, так как в web версии нельзя сделать бургер будучи неавторизованным ")
+    @Description("Создание заказа без авторизации и без  ингредиентов, ожидается код 401 Unauthorized")
     public void createOrderWithoutAuthorizationAndIngredientsTest() {
         isDeleteUser = false;
         Order order = new Order(new String[]{});
         orderMethods.createOrderWithoutAuthorization(order).then()
-                .statusCode(SC_BAD_REQUEST)
-                .and()
-                .assertThat()
-                .body("message", equalTo("Ingredient ids must be provided"));
+                .statusCode(SC_UNAUTHORIZED);
+
     }
 
     @After
